@@ -1,0 +1,26 @@
+{% extends 'myCart/basic.html' %}
+{% block body %}
+
+<div class="container row">
+
+      {% for i in allProds %}
+
+<div class="card col-md-4" style="width: 18rem;">
+         <img src='/Pictures/{{i.8}}' class="card-img-top" alt="">
+
+  <div class="card-body">
+    <h5 class="card-title">{{i.3}}</h5>
+    <h6 class="card-subtitle mb-2 text-muted">{{i.6}}</h6>
+    <p class="card-text">{{i.4}}.</p>
+
+
+
+    <a href="/myCart/prodetails/{{i.0}}" class="card-link">Details</a>
+  </div>
+</div>
+
+
+
+    {% endfor %}
+</div>
+{% endblock%}

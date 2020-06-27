@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+  </head>
+<style>
+
+    #search1 {
+      color:black;
+    }
+
+    .tblThread {
+        background-color: black !important;
+        color: white !important;
+    }
+
+    .langTable {
+        padding: 5px;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+    }
+
+    #body {
+        background-color: white;
+        font-weight: bold;
+    }
+
+    /*.modal-dialog {
+        direction:ltr !important;
+    }*/
+
+    /*.modal-footer{
+        margin-right: 500px;
+        margin-top: 30px;
+    }*/
+</style>
+
+
+  <body>
+
+  <input type=button value="click" id="btntest"/>
+<div class="langTable">
+    
+    <div id="tblContainer">
+        <table class="table" id="tblLang">
+            <thead class="tblThread">
+                <tr>
+                    <th scope="col">S.No</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Category</th>
+                    {% comment %} <th scope="col"><select id="LangSwitcher" style="color: black;"></select></th> {% endcomment %}
+                    <th scope="col">Price</th>
+                    <th scope="col">Stock</th>
+                    <th scope="col">Weight</th>
+                    <th scope="col"><input id="search1" placeholder="Search" /></th>
+                </tr>
+
+            </thead>
+            <tbody id="body"></tbody>
+        </table>
+    </div>
+</div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script>
+
+  $(document).ready(function(e){
+  
+
+  $('#btntest').on('click',function(e){
+    e.preventDefault();
+    console.log("1")
+    $.ajax({
+      type: "POST",
+      url: "/myCart/get_admin_data/",
+data:{a:'1'},
+      // handle a successful response
+      success : function(data) {
+          alert(data['result'])
+          console.log("1")
+      },
+      // handle a non-successful response
+      error : function() {
+        alert("ac");
+      }
+
+    });
+  });
+
+  });
+
+</script>

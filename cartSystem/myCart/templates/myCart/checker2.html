@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+
+    <title>Cashier</title>
+  </head>
+  <body>
+   <table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Sr.NO</th>
+         <th scope="col">Product ID</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Product Barcode</th>
+      <th scope="col">Quantity</th>
+        <th scope="col">Price</th>
+        <th scope="col">Total</th>
+
+    </tr>
+  </thead>
+  <tbody id="posBody">
+{% for i in od %}
+    <tr>
+      <th scope="row">{{i.0}}</th>
+      <td>{{i.1}}</td>
+      <td>{{i.2}}</td>
+      <td>{{i.3}}</td>
+        <td>{{i.4}}</td>
+        <td>{{i.5}}</td>
+        <td>{{i.6}}</td>
+
+
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+   <button type="submit" class="btn btn-primary" value="{{order_id }}" id="a_id" >Accept</button>
+       <form action="/myCart/delete_confirm/" method="get"><button type="submit" class="btn btn-primary" name="order_id" value="{{order_id }}"id="r_id">Rejected</button></form>
+           <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+  </body>
+<script>
+$("#a_id").on("click",function(e){
+
+
+var order_id=$("#a_id").val();
+  $.ajax({
+      type: "GET",
+      url: "/myCart/make_confirm/",
+      data : {order_id:order_id},
+      // handle a successful response
+      success : function(data) {
+      if(data['result']=="yes"){
+
+      alert("ACCEPTED SUCCESSFULLY");
+      }
+      else{
+      alert("THERE ARE SOME PROBLEM PLEASE TRY AGAIN");
+      }
+
+  },
+  error:function()
+  {
+  alert("NOT SUCCESS");
+  }
+    });
+    });
+
+
+</script>

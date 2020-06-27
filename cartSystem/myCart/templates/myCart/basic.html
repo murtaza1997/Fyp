@@ -1,0 +1,184 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+   
+    <link src="/css/simple-sidebar.css" rel="stylesheet">
+    {% comment %} <link src="/css/bootstrap.min.css" rel="stylesheet"> {% endcomment %}
+
+    <title>{% block title%} {% endblock %}</title>
+     <style>
+       {% block css %} 
+       {% endblock %}
+  </style>
+  </head>
+  <body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="/myCart">Smart Shopping Cart</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/myCart">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Product Categories
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+        {% for i in tt %}
+         <a class="dropdown-item" href="/myCart/viewpro/{{i.0}}">{{i.1}}</a>
+
+         {% endfor %}
+          
+        </div>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/myCart/viewlist">View List</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/myCart/addval">View Cart</a>
+      </li>
+
+     
+
+
+    </ul>
+    <form class="form-inline my-2 my-lg-0" action="/myCart/logout/" method="post">{% csrf_token %}
+<!--      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</button>
+    </form>
+    {% comment %} <button type="button" class="btn btn-secondary mx-2" id="popcart" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" data-content="Vivamus
+sagittis lacus vel augue laoreet rutrum faucibus.">
+
+
+  Cart(<span id="cart">0</span>)
+</button> {% endcomment %}
+  </div>
+</nav>
+
+
+  <div class="d-flex" id="wrapper">
+
+    <!-- Sidebar -->
+    <div class="bg-light border-right col-md-3" id="sidebar-wrapper">
+      <div class="sidebar-heading">Recommended items so far </div>
+      <div class="list-group list-group-flush" id="add_rec">
+
+      </div>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+
+      {% comment %} <div class="container-fluid">
+        <h1 class="mt-4">Simple Sidebar</h1>
+        <p>The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will change.</p>
+        <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>. The top navbar is optional, and just for demonstration. Just create an element with the <code>#menu-toggle</code> ID which will toggle the menu when clicked.</p>
+      </div> {% endcomment %}
+    {% block body %} {% endblock %}
+  
+    </div>
+    <!-- /#page-content-wrapper -->
+
+  </div>
+
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+   
+  </body>
+</html>
+
+
+
+{% block js %}
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<scipt src="https://cdnjs.cloudflare.com/ajax/libs/scannerdetection/1.2.0/jquery.scannerdetection.compatibility.js"></scipt>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/scannerdetection/1.2.0/jquery.scannerdetection.compatibility.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/scannerdetection/1.2.0/jquery.scannerdetection.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/scannerdetection/1.2.0/jquery.scannerdetection.min.js"></script>
+
+
+
+<script>
+    var scannerInput;
+                         for(i=0;i<data['already_val'].length;i++)
+    var proName=null;
+    console.log("test")
+    $(document).scannerDetection({
+
+        timeBeforeScanTest: 200,
+        avgTimeByChar: 40,
+        endChar: [13],
+        onComplete: function(barcode, qty) {
+            scannerInput = barcode;
+            console.log(scannerInput)
+
+
+            $.ajax({
+                type: "GET",
+                url: "/myCart/addlist/",
+                data:{barcode:scannerInput, quantity:'1'},
+                // handle a successful response
+                success : function(data) {
+
+                    arr12=data['result'][data['result'].length-1]
+                    arr112=arr12.toString();
+                    arr212=arr112.split(",");
+                    proName=arr212[2]
+                    console.log("prodcut "+proName)
+
+                    $.ajax({
+                        type: "GET",
+                        url: "/myCart/Recommend_item/",
+                        data:{my_value:proName},
+                        // handle a successful response
+                        success : function(data) {
+                        if((data['already_val'].length)>0)
+                        {
+                         console.log("hello");
+                         $('#add_rec').empty();
+                         {
+                         console.log(data['already_val'][i])
+                         var val=`<a href="#" class="list-group-item list-group-item-action bg-light">`+data['already_val'][i]+`</a>`
+                         $('#add_rec').append(val)
+                         }
+                        }
+
+                        },
+                        // handle a non-successful response
+                        error : function() {
+                            alert("a");
+                        }
+                    });
+                }
+            });
+        }
+    });
+</script>
+
+
+
+{% endblock %}

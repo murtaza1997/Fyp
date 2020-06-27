@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+    <title>Document</title>
+</head>
+<style>
+    #map1 {
+        /* border-style: solid;
+        border-width: 5px; */
+    }
+</style>
+
+<body>
+    <div class="modal fade" id="confirm" tabindex="1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <div id="tittlemsg">
+
+                    </div>
+                    <br />
+                </div>
+                <div class="modal-body" id="bodymsg">
+                    <table class="table table-bordered table-hover" id="myTable">
+                        <thead>
+                            <tr>
+                                <th>Products</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bcode">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <input class="comfirmYes " type="button" value="Submit" onclick="submit()" />
+                    <!-- <input type="button" onclick="submit1()" value="Cancel" /> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="abc">
+        <div class="d1">
+            <img src=" /Pictures/maplatestcolor.png " height="940 " width="1350" id="map1">
+        </div>
+
+        <div>
+            <img id="iconLoc" src="/Pictures/d2.png" height="23" width="23" style="position: absolute; left: 225px; top: 478px; display:none;">
+        </div>
+
+        <div style="position: absolute; left: 556px; top: 32px;" class="row">
+            <input type="text" id="srch" />
+            <input type="button" value="Search" id="btnSearch" />
+        </div>
+    </div>
+</body>
+
+</html>
+
+<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+
+
+<script>
+    var xcor = 0;
+    var ycor = 0;
+    $(document).ready(function() {
+
+        // function move() {
+        //     $('#iconLoc').css({
+        //         "-webkit-transform": "rotate(90deg)",
+        //         "-moz-transform": "rotate(90deg)",
+        //         "transform": "rotate(90deg)" /* For modern browsers(CSS3)  */
+        //     });
+        // }
+
+        $('#btnSearch').on("click", function() {
+            var item = $("#srch").val();
+
+            var offset = $('.d1').offset();
+            $.ajax({
+                        type: "GET",
+                        url: "/myCart/a_searchmap/",
+                        data:{spname:item},
+                        // handle a successful response
+                        success : function(data) {
+                          if (data['result'].length>0)
+                          {
+                             $('#iconLoc').css("display", "block");
+
+
+                        var left=data['result'][0][0];
+                         var top=data['result'][0][1];
+                        left += offset.left
+                    top += offset.top
+                    document.getElementById("iconLoc").style.left = left + "px";
+                    document.getElementById("iconLoc").style.top = top + "px";
+                    console.log(offset.left);
+                    console.log(offset.top);
+                    $('#iconLoc').on('mouseover', function() {
+                        $('#iconLoc').stop().animate({
+                            opacity: 1
+                        });
+                    });
+
+                        }
+                         else {
+                    var left = 790;
+                    var top = 280;
+                    left += offset.left
+                    top += offset.top
+                    document.getElementById("iconLoc").style.left = left + "px";
+                    document.getElementById("iconLoc").style.top = top + "px";
+
+
+                    $('html, body').animate({
+                        scrollTop: $("#iconLoc").offset().top,
+                        scrollLeft: $("#iconLoc").offset().left,
+                        scrollBottom: $("#iconLoc").offset().bottom,
+                        scrollRight: $("#iconLoc").offset().right,
+                    }, 1000);
+                }
+                        },
+                        // handle a non-successful response
+                        error : function() {
+                            alert("a");
+                        }
+                    });
+
+        });
+//yahan pr Click wala start horha hai
+
+        $('.d1').click(function(e) {
+
+            var offset = $(this).offset();
+
+            console.log(e.pageX + "-" + offset.left);
+            console.log(e.pageY + "-" + offset.top)
+
+            xcor = (e.pageX - offset.left);
+            ycor = (e.pageY - offset.top);
+             $.ajax({
+                        type: "GET",
+                        url: "/myCart/map_pro_view/",
+                        data:{x:xcor, y:ycor},
+                        // handle a successful response
+                        success : function(data) {
+
+                        Openmodal(xcor, ycor,data['result']);
+
+                        },
+                        // handle a non-successful response
+                        error : function() {
+                            alert("a");
+                        }
+                    });
+            //alert(xcor + " " + ycor)
+
+
+
+        });
+
+        function Openmodal(x, y,prolist) {
+
+
+                $('#tittlemsg').empty();
+                var element = `<b>Category:- </b><a>`+prolist[0]+`</a>`;
+                $('#tittlemsg').append(element);
+                $('#bcode').empty();
+                for (i = 1; i <prolist.length; i++) {
+
+                    arr12=prolist[i];
+                    arr22=arr12.toString();
+
+                     console.log(arr22);
+
+                       arr212=arr22.split(",");
+
+
+       var element = `<tr><td>`+arr212[3]+`</td><td>`+arr212[4]+`</td><td><input onclick=getId(`+arr212[0]+`) type="button" value="Add To List" class="btnAddList"/></td></tr>`;
+                $('#bcode').append(element);
+
+
+}
+            $("#confirm").modal();
+                $("#confirm").show();
+
+        }
+
+           $('img[src="'+this.icon+'"]').stop().animate({opacity:.5});
+
+    });
+    function getId(id)
+    {
+    console.log("HELLO i am in the function");
+
+                    $.ajax({
+                        type: "GET",
+                        url: "/myCart/id_to_list/",
+                        data:{pro_id:id},
+                        // handle a successful response
+                        success : function(data) {
+                        alert("ADDED SUCCESSFULLY");
+
+
+                        },
+                        // handle a non-successful response
+                        error : function() {
+                            alert("a");
+                        }
+                    });
+
+    }
+
+</script>
