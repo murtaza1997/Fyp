@@ -187,7 +187,7 @@
                        arr212=arr22.split(",");
 
 
-       var element = `<tr><td>`+arr212[3]+`</td><td>`+arr212[4]+`</td><td><input onclick=getId(`+arr212[0]+`) type="button" value="Add To List" class="btnAddList"/></td></tr>`;
+       var element = `<tr><td>`+arr212[3]+`</td><td>`+arr212[7]+`</td><td><input onclick=getId(`+arr212[0]+`) type="button" value="Add To List" class="btnAddList"/></td></tr>`;
                 $('#bcode').append(element);
 
 
@@ -202,7 +202,6 @@
     });
     function getId(id)
     {
-    console.log("HELLO i am in the function");
 
                     $.ajax({
                         type: "GET",

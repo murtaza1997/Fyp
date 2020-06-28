@@ -43,7 +43,11 @@
   </tbody>
 </table>
    <button type="submit" class="btn btn-primary" value="{{order_id }}" id="a_id" >Accept</button>
-       <form action="/myCart/delete_confirm/" method="get"><button type="submit" class="btn btn-primary" name="order_id" value="{{order_id }}"id="r_id">Rejected</button></form>
+       <form action="/myCart/delete_confirm/" method="get" onsubmit="return confirm('Do you want to reject this order?');">
+         <button type="submit" class="btn btn-primary" name="order_id" value="{{order_id }}"id="r_id">
+           Rejected
+         </button>
+       </form>
            <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
@@ -53,6 +57,9 @@ $("#a_id").on("click",function(e){
 
 
 var order_id=$("#a_id").val();
+var txt;
+    if (confirm("Are you sure that you want to checkout?")) {
+
   $.ajax({
       type: "GET",
       url: "/myCart/make_confirm/",
@@ -62,6 +69,8 @@ var order_id=$("#a_id").val();
       if(data['result']=="yes"){
 
       alert("ACCEPTED SUCCESSFULLY");
+       window.location = 'http://127.0.0.1:8000/myCart/GetOrderId/?oid='+2032;
+<!--      window.location.href = "http://127.0.0.1:8000/myCart/checker/";-->
       }
       else{
       alert("THERE ARE SOME PROBLEM PLEASE TRY AGAIN");
@@ -73,6 +82,11 @@ var order_id=$("#a_id").val();
   alert("NOT SUCCESS");
   }
     });
+    }
+    else {
+      txt = "You pressed Cancel!";
+    }
+
     });
 
 
