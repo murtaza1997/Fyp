@@ -71,6 +71,7 @@ tr:nth-child(even) {
                     <th scope="col">Price</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">TOTAL</th>
+                    <th scope="col"></th>
 
                   </tr>
                 </thead>
@@ -94,6 +95,46 @@ tr:nth-child(even) {
 
 
 <script>
+
+function delRow(code){
+    $.ajax({
+      type: "GET",
+      url: "/myCart/delete_row/",
+      data:{barcode:code},
+      // handle a successful response
+      success : function(data) {
+         $('#posBody').empty();
+                    var lnt=data['result'].length
+                    console.log("length"+lnt)
+                    for(i=0;i<lnt;i++){
+                    arr=data['result'][i]
+                    arr1=arr.toString();
+                    arr2=arr1.split(",");
+                    name=arr2[2]
+                    var appn=`<tr>
+                                  <td scope="col">`+arr2[3]+`</td>
+                                  <td scope="col">`+arr2[2]+`</td>
+                                  <td scope="col">`+arr2[5]+`</td>
+                                  <td scope="col">`+arr2[4]+`</th>
+                                  <td scope="col">`+arr2[6]+`</td>
+                        <td scope="col"><input onclick=delRow(`+arr2[3]+`) value="Delete" type="button" class="btn btn-primary mb-2" /></td>
+
+                                </tr>`
+
+                    $('#posBody').append(appn)
+                    sum=sum+parseInt(arr2[6])
+                    }
+
+                    $('#lblTotal').text(sum)
+
+      },
+// handle a non-successful response
+      error : function() {
+        alert("ac");
+      }
+      });
+  }
+
 
 $("#btnCheckOut").on("click",function(e){
     e.preventDefault();
@@ -121,16 +162,19 @@ $("#btnCheckOut").on("click",function(e){
 
 var proName=null
 $(document).ready(function(e){
+
   $.ajax({
       type: "GET",
       url: "/myCart/seedata/",
       // handle a successful response
       success : function(data) {
 
-        arr12=data['result'][data['result'].length-1]
-        arr112=arr12.toString();
-        arr212=arr112.split(",");
-        proName=arr212[2]
+       arr12=data['result'][data['result'].length-1]
+<!--       alert(arr12)-->
+<!--      console.log(arr12)-->
+<!--&lt;!&ndash;        arr112=arr12.toString();&ndash;&gt;-->
+<!--&lt;!&ndash;        arr212=arr112.split(",");&ndash;&gt;-->
+        proName=arr12[2]
         console.log("prodcut "+proName)
 
         $('#posBody').empty();
@@ -148,7 +192,7 @@ $(document).ready(function(e){
                         <td scope="col">`+arr2[5]+`</td>
                         <td scope="col">`+arr2[4]+`</th>
                         <td scope="col">`+arr2[6]+`</td>
-
+                        <td scope="col"><input onclick=delRow(`+arr2[3]+`) value="Delete" type="button" class="btn btn-primary mb-2" /></td>
                       </tr>`
 
           $('#posBody').append(appn)
@@ -161,7 +205,9 @@ $(document).ready(function(e){
       }
  });
 
-  
+
+
+
 
     var scannerInput;
     var proName=null;
@@ -184,9 +230,11 @@ $(document).ready(function(e){
                 success : function(data) {
 
                     arr12=data['result'][data['result'].length-1]
-                    arr112=arr12.toString();
-                    arr212=arr112.split(",");
-                    proName=arr212[2]
+                    console.log(arr12)
+<!--                    alert(arr12)-->
+<!--                    arr112=arr12.toString();-->
+<!--                    arr212=arr112.split(",");-->
+                    proName=arr12[2]
                     console.log("prodcut "+proName)
 
                     $('#posBody').empty();
@@ -203,7 +251,7 @@ $(document).ready(function(e){
                                   <td scope="col">`+arr2[5]+`</td>
                                   <td scope="col">`+arr2[4]+`</th>
                                   <td scope="col">`+arr2[6]+`</td>
-
+                                    <td scope="col"><input onclick=delRow(`+arr2[3]+`) value="Delete" type="button" class="btn btn-primary mb-2" /></td>
                                 </tr>`
 
                     $('#posBody').append(appn)
@@ -263,6 +311,8 @@ $(document).ready(function(e){
 //to add in the database :
 
   });
+
+
 
 
   function getCookie(name) {

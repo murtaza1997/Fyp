@@ -54,6 +54,9 @@
       <li class="nav-item">
         <a class="nav-link" href="/myCart/addval">View Cart</a>
       </li>
+        <li class="nav-item">
+        <a class="nav-link" href="/myCart/searchmap">View Map</a>
+      </li>
 
     </ul>
  <form class="form-inline my-2 my-lg-0" action="/myCart/logout/" method="post">{% csrf_token %}
@@ -128,12 +131,12 @@ sagittis lacus vel augue laoreet rutrum faucibus.">
        <div class="item">
         <h3>Fruits</h3>
 
-        <img src="/Pictures/Fruits.jfif" alt="Chicago" style="width:1000px; height: 500px">
+        <img src="/Pictures/Fruits.jfif" alt="Fruits" style="width:1000px; height: 500px">
       </div>
      <div class="item">
         <h3>Garments</h3>
 
-        <img src="/Pictures/garments.jpg" alt="Chicago" style="width:1000px; height: 500px">
+        <img src="/Pictures/garments.jpg" alt="Garments" style="width:1000px; height: 500px">
       </div>
 
     </div>
@@ -183,7 +186,7 @@ sagittis lacus vel augue laoreet rutrum faucibus.">
 
 <script>
     var scannerInput;
-                         for(i=0;i<data['already_val'].length;i++)
+<!--                         for(i=0;i<data['already_val'].length;i++)-->
     var proName=null;
     console.log("test")
     $(document).scannerDetection({
@@ -204,9 +207,9 @@ sagittis lacus vel augue laoreet rutrum faucibus.">
                 success : function(data) {
 
                     arr12=data['result'][data['result'].length-1]
-                    arr112=arr12.toString();
-                    arr212=arr112.split(",");
-                    proName=arr212[2]
+<!--                    arr112=arr12.toString();-->
+<!--                    arr212=arr112.split(",");-->
+                    proName=arr12[2]
                     console.log("prodcut "+proName)
 
                     $.ajax({
@@ -215,10 +218,12 @@ sagittis lacus vel augue laoreet rutrum faucibus.">
                         data:{my_value:proName},
                         // handle a successful response
                         success : function(data) {
+                        console.log("i am in recommendation system");
                         if((data['already_val'].length)>0)
                         {
                          console.log("hello");
                          $('#add_rec').empty();
+                         for(i=0;i<data['already_val'].length;i++)
                          {
                          console.log(data['already_val'][i])
                          var val=`<a href="#" class="list-group-item list-group-item-action bg-light">`+data['already_val'][i]+`</a>`

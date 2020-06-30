@@ -254,6 +254,15 @@ def f_checker(request):
 
     params = {'od': fullfinalist,'order_id':order_id}
     return render(request, 'myCart/checker2.html', params)
+def delete_row(request):
+     barcode=request.GET.get('barcode')
+     myobj=ADD_item_toCart()
+     cust_id = request.session['is_logged']
+     t=myobj.delete_row(cust_id,barcode=barcode)
+     return HttpResponse(
+         json.dumps({'result': t}),
+         content_type="application/json"
+     )
 
 
 def addlist(request):
