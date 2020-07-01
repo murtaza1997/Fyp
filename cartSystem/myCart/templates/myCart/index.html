@@ -95,8 +95,48 @@ tr:nth-child(even) {
 
 
 <script>
+function decItem(code){
+sum=0;
+    $.ajax({
+      type: "GET",
+      url: "/myCart/decItem/",
+      data:{barcode:code},
+      // handle a successful response
+      success : function(data) {
+         $('#posBody').empty();
+                    var lnt=data['result'].length
+                    console.log("length"+lnt)
+                    for(i=0;i<lnt;i++){
 
+                    arr=data['result'][i]
+                    arr1=arr.toString();
+                    arr2=arr1.split(",");
+                    name=arr2[2]
+                    var appn=`<tr>
+                                  <td scope="col">`+arr2[3]+`</td>
+                                  <td scope="col">`+arr2[2]+`</td>
+                                  <td scope="col">`+arr2[5]+`</td>
+                                  <td scope="col">`+arr2[4]+`<input onclick=decItem(`+arr2[3]+`) value="-" type="button" class="btn btn-primary mb-2" style=" height:25px;width:20px;"/></td>
+                                  <td scope="col">`+arr2[6]+`</td>
+                        <td scope="col"><input onclick=delRow(`+arr2[3]+`) value="Delete" type="button" class="btn btn-primary mb-2" /></td>
+
+                                </tr>`
+
+                    $('#posBody').append(appn)
+                    sum=sum+parseInt(arr2[6])
+                    }
+
+                    $('#lblTotal').text(sum)
+
+      },
+// handle a non-successful response
+      error : function() {
+        alert("ac");
+      }
+      });
+  }
 function delRow(code){
+    sum=0;
     $.ajax({
       type: "GET",
       url: "/myCart/delete_row/",
@@ -115,7 +155,7 @@ function delRow(code){
                                   <td scope="col">`+arr2[3]+`</td>
                                   <td scope="col">`+arr2[2]+`</td>
                                   <td scope="col">`+arr2[5]+`</td>
-                                  <td scope="col">`+arr2[4]+`</th>
+                                  <td scope="col">`+arr2[4]+`<input onclick=decItem(`+arr2[3]+`) value="-" type="button" class="btn btn-primary mb-2" style=" height:25px;width:20px;"/></td>
                                   <td scope="col">`+arr2[6]+`</td>
                         <td scope="col"><input onclick=delRow(`+arr2[3]+`) value="Delete" type="button" class="btn btn-primary mb-2" /></td>
 
@@ -162,6 +202,27 @@ $("#btnCheckOut").on("click",function(e){
 
 var proName=null
 $(document).ready(function(e){
+ $.ajax({
+      type: "GET",
+      url: "/myCart/getRec/",
+      // handle a successful response
+      success : function(data) {
+             if((data['already_val'].length)>0)
+                        {
+
+                         $('#add_rec').empty();
+                         for(i=0;i<data['already_val'].length;i++)
+                         {
+                         var val=`<a href="#" class="list-group-item list-group-item-action bg-light">`+data['already_val'][i]+`</a>`
+                         $('#add_rec').append(val)
+                         }
+                        }
+      },
+      error : function() {
+              alert("Recommendation error");
+      }
+ });
+
 
   $.ajax({
       type: "GET",
@@ -190,7 +251,7 @@ $(document).ready(function(e){
                         <td scope="col">`+arr2[3]+`</td>
                         <td scope="col">`+arr2[2]+`</td>
                         <td scope="col">`+arr2[5]+`</td>
-                        <td scope="col">`+arr2[4]+`</th>
+                        <td scope="col">`+arr2[4]+`<input onclick=decItem(`+arr2[3]+`) value="-" type="button" class="btn btn-primary mb-2" style=" height:25px;width:20px;"/></th>
                         <td scope="col">`+arr2[6]+`</td>
                         <td scope="col"><input onclick=delRow(`+arr2[3]+`) value="Delete" type="button" class="btn btn-primary mb-2" /></td>
                       </tr>`
@@ -249,7 +310,7 @@ $(document).ready(function(e){
                                   <td scope="col">`+arr2[3]+`</td>
                                   <td scope="col">`+arr2[2]+`</td>
                                   <td scope="col">`+arr2[5]+`</td>
-                                  <td scope="col">`+arr2[4]+`</th>
+                                  <td scope="col">`+arr2[4]+`<input onclick=decItem(`+arr2[3]+`) value="-" type="button" class="btn btn-primary mb-2" style=" height:25px;width:20px;"/></th>
                                   <td scope="col">`+arr2[6]+`</td>
                                     <td scope="col"><input onclick=delRow(`+arr2[3]+`) value="Delete" type="button" class="btn btn-primary mb-2" /></td>
                                 </tr>`

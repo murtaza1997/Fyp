@@ -254,6 +254,8 @@ def f_checker(request):
 
     params = {'od': fullfinalist,'order_id':order_id}
     return render(request, 'myCart/checker2.html', params)
+def tempPage(request):
+    return render(request,'myCart/forTempScan.html')
 def delete_row(request):
      barcode=request.GET.get('barcode')
      myobj=ADD_item_toCart()
@@ -264,6 +266,16 @@ def delete_row(request):
          content_type="application/json"
      )
 
+
+def decItem(request):
+    barcode = request.GET.get('barcode')
+    myobj = ADD_item_toCart()
+    cust_id = request.session['is_logged']
+    t = myobj.decItem(cust_id, barcode=barcode)
+    return HttpResponse(
+        json.dumps({'result': t}),
+        content_type="application/json"
+    )
 
 def addlist(request):
     if request.session.has_key('is_logged'):
@@ -581,6 +593,19 @@ def recommended_items(request):
 
         # dic = {'item':'Your recommended item: '+str(already),'buyeritem':'Your cart items are : '+str(buyer)}
         print("testing")
+        # k=0
+        # for i in range(len(already)-k):
+        #     print(already[i])
+        #     if already[i] in buyer:
+        #
+        #         already.pop(i)
+        #         k=k+1
+
+        for item in already:
+            if item in buyer:
+                already.remove(item)
+
+        print(buyer)
         print(already)
         # return render(request,'index.html',dic)
         return HttpResponse(
@@ -590,3 +615,9 @@ def recommended_items(request):
 
     else:
         return render(request, 'myCart/login.html')
+
+def getRec(request):
+    return HttpResponse(
+        json.dumps({'already_val': already}),
+        content_type="application/json"
+    )

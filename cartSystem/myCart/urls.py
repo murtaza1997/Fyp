@@ -44,13 +44,17 @@ urlpatterns = [
     path("a_searchmap/", views.a_searchmap, name='ajax.a_searchmap'),
     path("map_pro_view/", views.map_pro_view, name='ajax.map_pro_view'),
     path("id_to_list/", views.id_to_list, name='ajax.id_to_list'),
+    path("decItem/", views.decItem, name='ajax.decItem'),
     path("delete_row/", views.delete_row, name='ajax.delete_row'),
+
+    path("getRec/", views.getRec, name='ajax.getRec'),
+
 
     path("make_confirm/", views.make_confirm, name='ajax.make_confirm'),
     path("delete_confirm/", views.delete_confirm, name='delete_confirm'),
 
 
-
+path("temppage/",views.tempPage,name='tempPage'),
     path("prodetails/<int:myid>", views.pro_details, name="prodetails"),
 
 

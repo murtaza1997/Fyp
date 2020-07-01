@@ -320,8 +320,48 @@ class ADD_item_toCart:
                 'SELECT * FROM Cart.dbo.temp_data where customer_id=' + str(cust_id))
             Append_list = []
             for i in cursor:
-                Append_list.append(i)
+                Append_list.append(list(i))
             return Append_list
+    def decItem(self,cust_id,barcode):
+        pro_details = []
+        conn = pyodbc.connect('Driver={SQL Server};'
+                              'Server=DESKTOP-0PJ76QG\SQLEXPRESS;'
+                              'Database=Cart;'
+                              'Trusted_Connection=yes;')
+
+        cursor = conn.cursor()
+        if barcode == '8961014015683':
+            barcode = 0000
+
+        elif barcode == '4902806008944':
+            barcode = 2002
+
+        elif barcode == '6300020155037':
+            barcode = 107
+        cursor.execute(
+            'SELECT * FROM Cart.dbo.temp_data where barcode=' + str(barcode) + 'and customer_id=' + str(cust_id))
+        forDec = []
+        for i in cursor:
+            forDec.append(list(i))
+        decseval = int(forDec[0][4]) - 1
+        if(decseval==0):
+            cursor.execute(
+                'Delete Cart.dbo.temp_Data where barcode=' + str(barcode) + 'and customer_id=' + str(cust_id))
+            cursor.commit()
+        else:
+            new_total = int(decseval) * int(forDec[0][5])
+            cursor = conn.cursor()
+            cursor.execute('UPDATE Cart.dbo.temp_data SET quantity=' + str(decseval) + ', total=' + str(
+                new_total) + 'where Barcode=' + str(barcode) + 'and customer_id=' + str(cust_id))
+            conn.commit()
+
+        cursor.execute(
+            'SELECT * FROM Cart.dbo.temp_data where customer_id=' + str(cust_id))
+        Append_list = []
+        for i in cursor:
+            Append_list.append(list(i))
+        return Append_list
+
     def delete_row(self,cust_id,barcode):
         conn = pyodbc.connect('Driver={SQL Server};'
                               'Server=DESKTOP-0PJ76QG\SQLEXPRESS;'

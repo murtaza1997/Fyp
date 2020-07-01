@@ -185,6 +185,41 @@ sagittis lacus vel augue laoreet rutrum faucibus.">
 
 
 <script>
+
+
+
+$(document).ready(function(e){
+  $.ajax({
+      type: "GET",
+      url: "/myCart/getRec/",
+      // handle a successful response
+      success : function(data) {
+             if((data['already_val'].length)>0)
+                        {
+
+                         $('#add_rec').empty();
+                         for(i=0;i<data['already_val'].length;i++)
+                         {
+                         var val=`<a href="#" class="list-group-item list-group-item-action bg-light">`+data['already_val'][i]+`</a>`
+                         $('#add_rec').append(val)
+                         }
+                        }
+      },
+      error : function() {
+              alert("Recommendation error");
+      }
+ });
+});
+
+
+
+
+
+
+
+
+
+
     var scannerInput;
 <!--                         for(i=0;i<data['already_val'].length;i++)-->
     var proName=null;

@@ -1,0 +1,158 @@
+{% extends 'myCart/basic.html' %}
+{% comment %} {% block css %}
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+{% endblock%} {% endcomment %}
+{% block body %}
+<form >{% csrf_token %}
+
+
+
+<div class="container mt-5 col-md-12">
+
+  <div class="form-row">
+
+<!--    <div class="col-3">-->
+<!--      <input type="text" class="form-control" placeholder="BarCode" id="barcode" name='barcode'>-->
+<!--    </div>-->
+<!--    <div class="col-3">-->
+<!--      <input type="text" class="form-control" placeholder="Quantity" id="quantity" name='quantity'>-->
+<!--    </div>-->
+<!--    <div class="col-auto">-->
+<!--      <button type="submit" class="btn btn-primary mb-2" id="add_to_Cart">ADD</button>-->
+<!--    </div>-->
+<!--  </div>-->
+
+  <div class="form-row">
+    <div >
+      <p class="form-control"><b>TOTAL :- </b></p>
+    </div>
+    <div >
+      <p  class="form-control"><b id="lblTotal">0 </b></p>
+    </div>
+  </div>
+</div>
+</form>
+<!--<form action="/myCart/forcheckout" method="get" >{% csrf_token %}-->
+
+<div class="container mt-5">
+<div class="col-auto">
+<!--      <button type="submit" class="btn btn-primary mb-2" id="goCheckout">Checkout</button>-->
+      <input id="btnCheckOut" value="Check out" type="button" class="btn btn-primary mb-2" />
+
+</div>
+</div>
+<!--</form>-->
+
+<div class="container mt-5">
+      <div class="row tm-content-row">
+        <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8 tm-block-col">
+          <div class="tm-bg-primary-dark tm-block tm-block-products">
+            <div class="tm-product-table-container">
+              <table class="table table-hover tm-table-small tm-product-table" border="1px solid black">
+                <thead>
+                  <tr>
+                    <th scope="col">Barcode</th>
+                    <th scope="col">PRODUCT NAME</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">TOTAL</th>
+                    <th scope="col"></th>
+
+                  </tr>
+                </thead>
+                <tbody id="posBody">
+
+
+                                 </tbody>
+              </table>
+            </div>
+
+{% endblock %}
+
+{% block js %}
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+
+<scipt src="https://cdnjs.cloudflare.com/ajax/libs/scannerdetection/1.2.0/jquery.scannerdetection.compatibility.js"></scipt>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/scannerdetection/1.2.0/jquery.scannerdetection.compatibility.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/scannerdetection/1.2.0/jquery.scannerdetection.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/scannerdetection/1.2.0/jquery.scannerdetection.min.js"></script>
+
+
+<script>
+    var scannerInput;
+    var proName=null;
+    console.log("test")
+    $(document).scannerDetection({
+
+        timeBeforeScanTest: 200,
+        avgTimeByChar: 40,
+        endChar: [13],
+        onComplete: function(barcode, qty) {
+            scannerInput = barcode;
+            console.log(scannerInput)
+                    if(scannerInput==4902806008944){
+                    $('#posBody').empty();
+                    var appn=`<tr>
+                                  <td scope="col">2002</td>
+                                  <td scope="col">gel</td>
+                                  <td scope="col">90</td>
+                                  <td scope="col">1</th>
+                                  <td scope="col">90</td>
+                                   <td scope="col"><input value="Delete" type="button" class="btn btn-primary mb-2" /></td>
+                                </tr>`
+
+                    $('#posBody').append(appn)
+
+                    $('#lblTotal').text(90)
+
+                    $('#add_rec').empty();
+                    var val=`<a href="#" class="list-group-item list-group-item-action bg-light">`+data['already_val'][i]+`</a>`
+                    $('#add_rec').append(val)
+
+                    else{
+                    $('#posBody').empty();
+                    var appn=`<tr>
+                                  <td scope="col">2002</td>
+                                  <td scope="col">gel</td>
+                                  <td scope="col">90</td>
+                                  <td scope="col">1</th>
+                                  <td scope="col">90</td>
+                                   <td scope="col"><input value="Delete" type="button" class="btn btn-primary mb-2" /></td>
+                                </tr>`
+
+                    $('#posBody').append(appn)
+                    var appn=`<tr>
+                                  <td scope="col">88821184</td>
+                                  <td scope="col">bread</td>
+                                  <td scope="col">90</td>
+                                  <td scope="col">1</th>
+                                  <td scope="col">90</td>
+                                   <td scope="col"><input value="Delete" type="button" class="btn btn-primary mb-2" /></td>
+                                </tr>`
+
+                    $('#posBody').append(appn)
+
+                    $('#lblTotal').text(180)
+                    }
+        }
+    });
+
+
+</script>
+{% endblock %}
