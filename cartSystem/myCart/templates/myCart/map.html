@@ -73,7 +73,7 @@
 
         <div style="position: absolute; left: 556px; top: 32px;" class="row">
             <input type="text" id="srch" />
-
+            <input type="button" value="Search" id="btnSearch" />
          <a href="javascript:history.back()" class=" GFG"> GO BACK</a>
         </div>
     </div>
@@ -123,6 +123,13 @@
                     document.getElementById("iconLoc").style.top = top + "px";
                     console.log(offset.left);
                     console.log(offset.top);
+
+                    $('html, body').animate({
+                        scrollTop: $("#iconLoc").offset().top,
+                        scrollLeft: $("#iconLoc").offset().left,
+                        scrollBottom: $("#iconLoc").offset().bottom,
+                        scrollRight: $("#iconLoc").offset().right,
+                    }, 1000);
                     $('#iconLoc').on('mouseover', function() {
                         $('#iconLoc').stop().animate({
                             opacity: 1

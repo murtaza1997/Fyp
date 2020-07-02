@@ -280,14 +280,35 @@ class ADD_item_toCart:
                               'Trusted_Connection=yes;')
 
         cursor = conn.cursor()
-        if barcode == '8961014015683':
-            barcode = 0000
+        print(barcode)
+        if barcode == '9200475781003':
+            barcode = 115
 
         elif barcode == '4902806008944':
             barcode = 2002
 
         elif barcode == '6300020155037':
             barcode = 107
+        elif barcode=='8886950050218':
+            barcode=91
+        elif barcode=='8961014246827':
+
+
+            barcode=110
+        elif barcode == 'Fa0516801950':
+
+
+            barcode =1003
+        elif barcode == '6291049711055':
+
+            barcode = 113
+
+        elif barcode == '8961014007657':
+
+            barcode = 115
+        elif barcode == '6300020155952':
+
+            barcode = 102
         cursor.execute(
             'SELECT * FROM Cart.dbo.temp_data where barcode=' + str(barcode) + 'and customer_id=' + str(cust_id))
         forInc = []
@@ -299,6 +320,7 @@ class ADD_item_toCart:
 
             for i in cursor:
                 pro_details.append(i)
+            print(pro_details)
             total = int(pro_details[0][6]) * int(quantity)
 
             myq = '''INSERT INTO Cart.dbo.temp_data(customer_id, sub_pro_id,name,Barcode,quantity,price,total) VALUES(?,?,?,?,?,?,?);'''
@@ -333,14 +355,35 @@ class ADD_item_toCart:
                               'Trusted_Connection=yes;')
 
         cursor = conn.cursor()
-        if barcode == '8961014015683':
-            barcode = 0000
+        if barcode == '9200475781003':
+            barcode = 115
 
         elif barcode == '4902806008944':
             barcode = 2002
 
         elif barcode == '6300020155037':
             barcode = 107
+        elif barcode=='8886950050218':
+            barcode=91
+        elif barcode == 'Fa0516801950':
+
+
+            barcode =1003
+        elif barcode=='8961014246827':
+
+
+            barcode=110
+        elif barcode == '6291049711055':
+
+            barcode = 113
+
+        elif barcode == '8961014007657':
+
+            barcode = 115
+        elif barcode == '6300020155952':
+
+            barcode = 102
+
         cursor.execute(
             'SELECT * FROM Cart.dbo.temp_data where barcode=' + str(barcode) + 'and customer_id=' + str(cust_id))
         forDec = []
@@ -553,6 +596,8 @@ class ProCategory(models.Model):
     ey = models.IntegerField(default=0)
     location_x = models.IntegerField(default=0)
     location_y = models.IntegerField(default=0)
+    def __str__(self):
+        return self.name
 
 
 class ProdTable(models.Model):
@@ -560,3 +605,5 @@ class ProdTable(models.Model):
     ProductCatID = models.IntegerField()
     name = models.CharField(max_length=50)
     image = models.ImageField(upload_to='Pictures', default="")
+    def __str__(self):
+        return self.name
