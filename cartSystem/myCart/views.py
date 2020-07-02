@@ -121,7 +121,11 @@ def delete_confirm(request):
     return render(request, 'myCart/checker.html')
 
 def searchmap(request):
-    return render(request, 'myCart/map.html')
+    if request.session.has_key('is_logged'):
+
+        return render(request, 'myCart/map.html')
+    else:
+        return render(request, 'myCart/login.html')
 
 
 def a_searchmap(request):
@@ -254,8 +258,7 @@ def f_checker(request):
 
     params = {'od': fullfinalist,'order_id':order_id}
     return render(request, 'myCart/checker2.html', params)
-def tempPage(request):
-    return render(request,'myCart/forTempScan.html')
+
 def delete_row(request):
      barcode=request.GET.get('barcode')
      myobj=ADD_item_toCart()

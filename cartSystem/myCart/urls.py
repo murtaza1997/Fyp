@@ -54,7 +54,6 @@ urlpatterns = [
     path("delete_confirm/", views.delete_confirm, name='delete_confirm'),
 
 
-path("temppage/",views.tempPage,name='tempPage'),
     path("prodetails/<int:myid>", views.pro_details, name="prodetails"),
 
 

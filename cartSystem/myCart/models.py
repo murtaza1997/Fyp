@@ -2,6 +2,9 @@
 import pyodbc
 import datetime
 from django.db import models
+from datetime import date
+
+
 # Create your models here.
 from django.contrib.sessions.models import Session
 
@@ -424,6 +427,14 @@ class viewOrder:
         Append_list = []
         for i in cursor:
             Append_list.append(list(i))
+        nameList=[]
+        for i in range(len(Append_list)):
+            cursor.execute('SELECT * FROM Cart.dbo.Person where id='+str(Append_list[i][1]))
+            for k in cursor:
+                nameList.append(k)
+                Append_list[i][1] = nameList[i][1]+" "+nameList[i][2]
+
+        print(Append_list)
         return Append_list
     def MakeConfirm(self,order_id):
         conn = pyodbc.connect('Driver={SQL Server};'
@@ -488,12 +499,12 @@ class for_Checkout_Registration:
             temp_data.append(list(i))
 
         total_sum = 0
-
+        todayDate = date.today()
         for item in temp_data:
             total_sum += item[6]
 
-        myq = '''INSERT INTO Cart.dbo.myorder(customer_id,total_amount,date) VALUES(?,?,?);'''
-        values = ([custId, total_sum, '2019-11-14'])
+        myq = '''INSERT INTO Cart.dbo.myorder(customer_id,total_amount,date,val_confirm) VALUES(?,?,?,?);'''
+        values = ([custId, total_sum, str(todayDate),0])
         cursor.execute(myq, values)
         conn.commit()
 
