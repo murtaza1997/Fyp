@@ -127,6 +127,10 @@ class sub_Product:
         cursor.execute('SELECT * FROM Cart.dbo.myCart_procategory')
         catid = 0
         catname = ""
+        real_x=int(x)
+        real_y=int(y)
+        print(real_x)
+        print(real_y)
         for i in cursor:
             pro_list = list(i)
             if(int(x) >= int(pro_list[4]) and int(x) <= int(pro_list[2]) and int(y) >= int(pro_list[5]) and int(y) <= int(pro_list[3])):
@@ -407,6 +411,17 @@ class ADD_item_toCart:
         for i in cursor:
             Append_list.append(list(i))
         return Append_list
+    def delete_row_checker(self,order_id,pro_id):
+        conn = pyodbc.connect('Driver={SQL Server};'
+                              'Server=DESKTOP-0PJ76QG\SQLEXPRESS;'
+                              'Database=Cart;'
+                              'Trusted_Connection=yes;')
+
+        cursor = conn.cursor()
+        cursor.execute(
+            'Delete Cart.dbo.product_order where order_id=' + str(order_id) + 'and product_id=' + str(pro_id))
+        cursor.commit()
+        return "DONE"
 
     def delete_row(self,cust_id,barcode):
         conn = pyodbc.connect('Driver={SQL Server};'
@@ -459,6 +474,21 @@ class forCashier:
 
 
 class viewOrder:
+    def viewPrevOrder(self, cust_id):
+        conn = pyodbc.connect('Driver={SQL Server};'
+                              'Server=DESKTOP-0PJ76QG\SQLEXPRESS;'
+                              'Database=Cart;'
+                              'Trusted_Connection=yes;')
+
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM Cart.dbo.myorder where val_confirm =1 and customer_id='+str(cust_id))
+        Append_list = []
+        for i in cursor:
+            Append_list.append(list(i))
+        print(Append_list)
+        return Append_list
+
+
     def vieworder(self):
         conn = pyodbc.connect('Driver={SQL Server};'
                               'Server=DESKTOP-0PJ76QG\SQLEXPRESS;'

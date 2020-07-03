@@ -64,6 +64,17 @@ def vieworder(request):
 def checker(reqeust):
     return render(reqeust, 'myCart/checker.html')
 
+def Get_prev_order(request):
+    cust_id = request.session['is_logged']
+    myval=viewOrder()
+    myList=myval.viewPrevOrder(cust_id)
+
+    return HttpResponse(
+        json.dumps({'result': myList}),
+        content_type="application/json"
+    )
+
+
 
 def view_admin(request):
 
@@ -226,7 +237,6 @@ def make_confirm(request):
         content_type="application/json"
     )
 def f_checker(request):
-
     order_id = request.GET.get('oid')
     # print(order_id)
 
@@ -243,6 +253,7 @@ def f_checker(request):
     # print(len(firstlist))
     # print(len(secondlist))
     val = 1
+    mysum=0
     for i in range(len(firstlist)):
         finallist.append(val)
         finallist.append(firstlist[i][1])
@@ -251,13 +262,59 @@ def f_checker(request):
         finallist.append(firstlist[i][2])
         finallist.append(firstlist[i][3])
         finallist.append(firstlist[i][2]*firstlist[i][3])
+        mysum=mysum+(firstlist[i][2]*firstlist[i][3])
         val = val+1
 
         fullfinalist.append(list(finallist))
         finallist.clear()
 
-    params = {'od': fullfinalist,'order_id':order_id}
+    params = {'od': fullfinalist,'order_id':order_id,'total_sum':str(mysum),'my_order_id':str(order_id)}
     return render(request, 'myCart/checker2.html', params)
+def view_prev_details(request):
+    order_id = request.GET.get('oid')
+    # print(order_id)
+
+    fc = forCashier()
+    mylist = fc.viewallpro(order_id=order_id)
+    # params = {'allProds': mylist}
+
+    firstlist = mylist['allProds']
+    secondlist = mylist['allProds2']
+    finallist = []
+    fullfinalist = []
+    # print(firstlist)
+    # print(secondlist)
+    # print(len(firstlist))
+    # print(len(secondlist))
+    val = 1
+    mysum = 0
+    for i in range(len(firstlist)):
+        finallist.append(val)
+        finallist.append(firstlist[i][1])
+        finallist.append(secondlist[i][3])
+        finallist.append(secondlist[i][5])
+        finallist.append(firstlist[i][2])
+        finallist.append(firstlist[i][3])
+        finallist.append(firstlist[i][2] * firstlist[i][3])
+        mysum = mysum + (firstlist[i][2] * firstlist[i][3])
+        val = val + 1
+
+        fullfinalist.append(list(finallist))
+        finallist.clear()
+
+    params = {'od': fullfinalist, 'order_id': order_id, 'total_sum': str(mysum), 'my_order_id': str(order_id)}
+    return render(request, 'myCart/admin_vp2.html', params)
+def delCash(request):
+    order_id = request.GET.get('order_id')
+    pro_id = request.GET.get('pro_id')
+    myob=ADD_item_toCart()
+    val=myob.delete_row_checker(order_id=order_id,pro_id=pro_id)
+    return HttpResponse(
+        json.dumps({'result': val}),
+        content_type="application/json"
+    )
+
+
 
 def delete_row(request):
      barcode=request.GET.get('barcode')

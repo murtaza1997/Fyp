@@ -23,6 +23,7 @@
       <th scope="col">Quantity</th>
         <th scope="col">Price</th>
         <th scope="col">Total</th>
+      <th></th>
 
     </tr>
   </thead>
@@ -36,23 +37,57 @@
         <td>{{i.4}}</td>
         <td>{{i.5}}</td>
         <td>{{i.6}}</td>
+      <td>
+        <input onclick=delRow({{i.1}}) value="Delete" type="button" class="btn btn-primary mb-2" />
+<!--        <input  value="Delete" type="button" class="btn btn-primary mb-2"/>-->
+      </td>
 
 
     </tr>
   {% endfor %}
   </tbody>
+
 </table>
-   <button type="submit" class="btn btn-primary" value="{{order_id }}" id="a_id" >Accept</button>
+   <div class="row">
+     <input style="display:none;" type="text" value={{my_order_id}} id="getId"/>
+   <button style="margin-left:20px;" type="submit" class="btn btn-primary" value="{{order_id }}" id="a_id" >Accept</button>
        <form action="/myCart/delete_confirm/" method="get" onsubmit="return confirm('Do you want to reject this order?');">
-         <button type="submit" class="btn btn-primary" name="order_id" value="{{order_id }}"id="r_id">
+         <button style="margin-left:15px;" type="submit" class="btn btn-primary" name="order_id" value="{{order_id }}"id="r_id">
            Rejected
          </button>
        </form>
+     </div>
+   <div class="form-row" style="margin-top:20px;">
+    <div style="margin-left:10px;" >
+      <p class="form-control"><b>TOTAL Bill:- </b></p>
+    </div>
+    <div style="margin-left:20px;">
+      <p  class="form-control"><b id="lblTotal">{{total_sum}}/- pkr </b></p>
+    </div>
+  </div>
            <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
   </body>
 <script>
+
+function delRow(proId){
+var oId=$("#a_id").val()
+$.ajax({
+      type: "GET",
+      url: "/myCart/delCash/",
+      data : {order_id:oId, pro_id:proId},
+      // handle a successful response
+      success : function(data) {
+        location.reload();
+      },
+      error:function()
+      {
+      alert("NOT SUCCESS");
+      }
+    });
+}
+
 $("#a_id").on("click",function(e){
 
 

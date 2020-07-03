@@ -39,6 +39,7 @@ urlpatterns = [
     path("seedata/", views.view_temp_data, name='ajax.view_temp_data'),
     path("checker/", views.checker, name='checker'),
     path("GetOrderId/", views.f_checker, name='f_checker'),
+    path("prev_order_details/", views.view_prev_details, name='prev_order_details'),
     path("vieworder/", views.vieworder, name='ajax.view_order'),
     path("searchmap/", views.searchmap, name='searchmap'),
     path("a_searchmap/", views.a_searchmap, name='ajax.a_searchmap'),
@@ -48,6 +49,9 @@ urlpatterns = [
     path("delete_row/", views.delete_row, name='ajax.delete_row'),
 
     path("getRec/", views.getRec, name='ajax.getRec'),
+    path("delCash/",views.delCash, name='ajax.delCash'),
+    path("Get_prev_order/", views.Get_prev_order, name='ajax.Get_prev_order'),
+
 
 
     path("make_confirm/", views.make_confirm, name='ajax.make_confirm'),
