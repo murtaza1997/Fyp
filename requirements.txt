@@ -82,7 +82,7 @@ pytest==5.3.0
 python-dateutil==2.6.1
 python-decouple==3.1
 pytz==2019.1
-pywin32==225
+pywin32==301
 regex==2019.11.1
 reportlab==3.5.42
 requests==2.22.0s3
